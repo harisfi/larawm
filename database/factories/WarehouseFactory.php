@@ -14,7 +14,8 @@ class WarehouseFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name' => $this->faker->company(),
+            'branch' => $this->faker->city()
         ];
     }
 }

@@ -14,7 +14,12 @@ class CreateProductsTable extends Migration
     public function up()
     {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('name');
+            $table->string('code')->unique();
+            $table->integer('stock');
+            $table->string('image')->nullable();
+            $table->foreignUuid('warehouse_id')->references('id')->on('warehouses');
             $table->timestamps();
         });
     }
