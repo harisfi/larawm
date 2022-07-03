@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductCreateRequest;
+use App\Http\Requests\ProductEditRequest;
 use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Models\Warehouse;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -14,7 +18,8 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        $products = Product::orderBy('name')->paginate(10);
+        return view('product.index', compact('products'));
     }
 
     /**
@@ -24,7 +29,8 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        $warehouses = Warehouse::get(['id', 'name']);
+        return view('product.create', compact('warehouses'));
     }
 
     /**
@@ -33,9 +39,26 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductCreateRequest $request)
     {
-        //
+        try {
+            $validated = $request->validated();
+
+            $path = Storage::putFile('public/img', $request->file('image'));
+            $path = Str::of($path)->replaceFirst('public/', '/storage/');
+            $validated['image'] = $path;
+
+            Product::create($validated);
+            return redirect(route('product.index'))->with('flash', [
+                'error' => false,
+                'msg' => 'A new product has been created.'
+            ]);
+        } catch (\Exception $e) {
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'Failed to create a product.'
+            ]);
+        }
     }
 
     /**
@@ -46,7 +69,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        //
+        return view('product.show', compact('product'));
     }
 
     /**
@@ -57,7 +80,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        $warehouses = Warehouse::get(['id', 'name']);
+        return view('product.edit', compact('product', 'warehouses'));
     }
 
     /**
@@ -67,9 +91,28 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductEditRequest $request, Product $product)
     {
-        //
+        try {
+            $validated = $request->validated();
+
+            if ($request->file('image')) {
+                $path = Storage::putFile('public/img', $request->file('image'));
+                $path = Str::of($path)->replaceFirst('public/', '/storage/');
+                $validated['image'] = $path;
+            }
+
+            $product->update($validated);
+            return redirect(route('product.index'))->with('flash', [
+                'error' => false,
+                'msg' => 'A product has been updated.'
+            ]);
+        } catch (\Exception $e) {
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'Failed to update a product.'
+            ]);
+        }
     }
 
     /**
@@ -80,6 +123,17 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        try {
+            $product->deleteOrFail();
+            return redirect(route('product.index'))->with('flash', [
+                'error' => false,
+                'msg' => 'A product has been deleted.'
+            ]);
+        } catch (\Exception $e) {
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'Failed to delete a product.'
+            ]);
+        }
     }
 }
