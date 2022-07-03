@@ -20,7 +20,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link @if(request()->is('warehouse*')) active @endif" href="{{ url('warehouse') }}">
+                <a class="nav-link @if(request()->is('warehouse*')) active @endif" href="{{ route('warehouse.index') }}">
                     <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                         <i class="ni ni-building text-success text-sm opacity-10"></i>
                     </div>

@@ -14,6 +14,6 @@ class WarehouseSeeder extends Seeder
      */
     public function run()
     {
-        Warehouse::factory()->count(1)->create();
+        Warehouse::factory()->hasProducts(5)->count(10)->create();
     }
 }

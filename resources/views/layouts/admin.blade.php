@@ -17,6 +17,7 @@
     <link href="{{ asset('/css/nucleo-svg.css') }}" rel="stylesheet" />
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ asset('/css/argon-dashboard.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/css/app.css') }}" rel="stylesheet" />
     @stack('styles')
 </head>
 

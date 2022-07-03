@@ -14,7 +14,7 @@ class WarehouseFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $this->faker->company(),
+            'name' => strtoupper($this->faker->bothify('WH-??###')),
             'branch' => $this->faker->city()
         ];
     }
