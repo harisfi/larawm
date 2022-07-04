@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\WarehouseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -16,4 +17,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::prefix('warehouse')->group(function () {
+    Route::get('/', [WarehouseController::class, 'index']);
+    Route::get('/search', [WarehouseController::class, 'search']);
+    Route::get('/{id}', [WarehouseController::class, 'show']);
 });
