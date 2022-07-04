@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarehouseController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,12 @@ Route::middleware('auth.user')->group(function () {
         'warehouse' => WarehouseController::class,
         'product' => ProductController::class
     ]);
+    Route::group([
+        'prefix' => 'profile',
+        'as' => 'profile'
+    ], function () {
+        Route::get('/', [UserController::class, 'show'])->name('.show');
+        Route::put('/', [UserController::class, 'update'])->name('.update');
+        Route::get('/edit', [UserController::class, 'edit'])->name('.edit');
+    });
 });
