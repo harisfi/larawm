@@ -56,10 +56,10 @@
                             <div class="numbers">
                                 <p class="text-sm mb-3 text-uppercase font-weight-bold">Account Info</p>
                                 <h6 class="font-weight-bolder mb-0">
-                                    {{-- Name: {{ auth()->user()->name }} --}}
+                                    Name: {{ auth()->user()->name }}
                                 </h6>
                                 <h6 class="font-weight-bolder">
-                                    {{-- Email: {{ auth()->user()->email }} --}}
+                                    Email: {{ auth()->user()->email }}
                                 </h6>
                             </div>
                         </div>
