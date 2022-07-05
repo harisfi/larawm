@@ -15,8 +15,16 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::orderBy('name')->paginate(5);
-        return view('warehouse.index', compact('warehouses'));
+        try {
+            $warehouses = Warehouse::orderBy('name')->paginate(5);
+            return view('warehouse.index', compact('warehouses'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('warehouse.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -26,7 +34,15 @@ class WarehouseController extends Controller
      */
     public function create()
     {
-        return view('warehouse.create');
+        try {
+            return view('warehouse.create');
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('warehouse.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -45,6 +61,7 @@ class WarehouseController extends Controller
                 'msg' => 'A new warehouse has been created.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('warehouse.index'))->with('flash', [
                 'error' => true,
                 'msg' => 'Failed to create a warehouse.'
@@ -60,7 +77,15 @@ class WarehouseController extends Controller
      */
     public function show(Warehouse $warehouse)
     {
-        return view('warehouse.show', compact('warehouse'));
+        try {
+            return view('warehouse.show', compact('warehouse'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('warehouse.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -71,7 +96,15 @@ class WarehouseController extends Controller
      */
     public function edit(Warehouse $warehouse)
     {
-        return view('warehouse.edit', compact('warehouse'));
+        try {
+            return view('warehouse.edit', compact('warehouse'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('warehouse.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -91,6 +124,7 @@ class WarehouseController extends Controller
                 'msg' => 'A warehouse has been updated.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('warehouse.index'))->with('flash', [
                 'error' => true,
                 'msg' => 'Failed to update a warehouse.'
@@ -113,6 +147,7 @@ class WarehouseController extends Controller
                 'msg' => 'A warehouse has been deleted.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('warehouse.index'))->with('flash', [
                 'error' => true,
                 'msg' => 'Failed to delete a warehouse.'

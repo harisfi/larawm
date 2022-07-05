@@ -11,18 +11,26 @@ class AuthController extends Controller
 {
     public function login(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
-        $credentials = $request->only('email', 'password');
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
+            $credentials = $request->only('email', 'password');
 
-        if(Auth::attempt($credentials)){
-            return redirect(route('dashboard'));
-        } else {
+            if(Auth::attempt($credentials)){
+                return redirect(route('dashboard'));
+            } else {
+                return redirect(route('login'))->withInput()->with('flash', [
+                    'error' => true,
+                    'msg' => 'Email/Password is invalid.'
+                ]);
+            }
+        } catch (\Exception $e) {
+            report($e);
             return redirect(route('login'))->withInput()->with('flash', [
                 'error' => true,
-                'msg' => 'Email/Password is invalid'
+                'msg' => 'An error occoured.'
             ]);
         }
     }
@@ -35,12 +43,13 @@ class AuthController extends Controller
             User::create($validated);
             return redirect(route('login'))->with('flash', [
                 'error' => false,
-                'msg' => 'Account registered, please login to continue'
+                'msg' => 'Account registered, please login to continue.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('login'))->withInput()->with('flash', [
                 'error' => true,
-                'msg' => 'Failed to register an account'
+                'msg' => 'Failed to register an account.'
             ]);
         }
     }

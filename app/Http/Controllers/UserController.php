@@ -50,9 +50,10 @@ class UserController extends Controller
                 'msg' => 'Profile has been updated.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('profile.show'))->with('flash', [
                 'error' => true,
-                'msg' => $e->getMessage()
+                'msg' => 'Failed to update profile.'
             ]);
         }
     }

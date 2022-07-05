@@ -18,8 +18,16 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::orderBy('name')->paginate(10);
-        return view('product.index', compact('products'));
+        try {
+            $products = Product::orderBy('name')->paginate(10);
+            return view('product.index', compact('products'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -29,8 +37,16 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $warehouses = Warehouse::get(['id', 'name']);
-        return view('product.create', compact('warehouses'));
+        try {
+            $warehouses = Warehouse::get(['id', 'name']);
+            return view('product.create', compact('warehouses'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -56,6 +72,7 @@ class ProductController extends Controller
                 'msg' => 'A new product has been created.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('product.index'))->with('flash', [
                 'error' => true,
                 'msg' => 'Failed to create a product.'
@@ -71,7 +88,15 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('product.show', compact('product'));
+        try {
+            return view('product.show', compact('product'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -82,8 +107,16 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        $warehouses = Warehouse::get(['id', 'name']);
-        return view('product.edit', compact('product', 'warehouses'));
+        try {
+            $warehouses = Warehouse::get(['id', 'name']);
+            return view('product.edit', compact('product', 'warehouses'));
+        } catch (\Exception $e) {
+            report($e);
+            return redirect(route('product.index'))->with('flash', [
+                'error' => true,
+                'msg' => 'An error occoured.'
+            ]);
+        }
     }
 
     /**
@@ -110,6 +143,7 @@ class ProductController extends Controller
                 'msg' => 'A product has been updated.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('product.index'))->with('flash', [
                 'error' => true,
                 'msg' => 'Failed to update a product.'
@@ -132,6 +166,7 @@ class ProductController extends Controller
                 'msg' => 'A product has been deleted.'
             ]);
         } catch (\Exception $e) {
+            report($e);
             return redirect(route('product.index'))->with('flash', [
                 'error' => true,
                 'msg' => 'Failed to delete a product.'
