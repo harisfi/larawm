@@ -25,7 +25,10 @@ class WarehouseEditRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required', Rule::unique('warehouses')->ignore($this->id)],
+            'name' => [
+                'required',
+                Rule::unique('warehouses')->ignore($this->warehouse->id)
+            ],
             'branch' => 'required'
         ];
     }

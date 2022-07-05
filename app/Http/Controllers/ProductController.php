@@ -44,9 +44,11 @@ class ProductController extends Controller
         try {
             $validated = $request->validated();
 
-            $path = Storage::putFile('public/img', $request->file('image'));
-            $path = Str::of($path)->replaceFirst('public/', '/storage/');
-            $validated['image'] = $path;
+            if ($request->file('image')) {
+                $path = Storage::putFile('public/img', $request->file('image'));
+                $path = Str::of($path)->replaceFirst('public/', '/storage/');
+                $validated['image'] = $path;
+            }
 
             Product::create($validated);
             return redirect(route('product.index'))->with('flash', [

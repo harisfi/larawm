@@ -26,7 +26,10 @@ class ProductEditRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'code' => ['required', Rule::unique('products')->ignore($this->id)],
+            'code' => [
+                'required',
+                Rule::unique('products')->ignore($this->product->id)
+            ],
             'stock' => 'required|integer|gt:0',
             'image' => 'nullable|file|image',
             'warehouse_id' => 'required|exists:warehouses,id'
