@@ -15,7 +15,8 @@ LaraWM adalah website untuk mengelola produk yang berada dalam suatu warehouse p
 
 ### Screenshot Aplikasi
 
-<img src="./public/img/ss/0.png" width="210"> <img src="./public/img/ss/1.png" width="210"> <img src="./public/img/ss/2.png" width="210"> <img src="./public/img/ss/3.png" width="210">
+<img src="./public/img/ss/0.png" width="380"> <img src="./public/img/ss/1.png" width="380">
+<img src="./public/img/ss/2.png" width="380"> <img src="./public/img/ss/3.png" width="380">
 
 ### Dependency
 
